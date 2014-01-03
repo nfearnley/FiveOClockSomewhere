@@ -1,0 +1,18 @@
+{
+    "versionLabel": "1.0",
+    "uuid": "66a35c1e-7ea2-475e-b061-bd8c60549dde",
+    "appKeys": {},
+    "longName": "Five O'Clock Somewhere",
+    "versionCode": 1,
+    "capabilities": [
+        ""
+    ],
+    "shortName": "Five O'Clock Somewhere",
+    "companyName": "SlugSource",
+    "watchapp": {
+        "watchface": true
+    },
+    "resources": {
+        "media": []
+    }
+}
