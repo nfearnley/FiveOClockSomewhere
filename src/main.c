@@ -32,15 +32,20 @@ char *cities_text[24] = // Array of 24 cities, one for each hour. Each city name
     "Pago Pago"         // 23
 };
 
-// Called once per second
-static void handle_hour_tick(struct tm* tick_time, TimeUnits units_changed)
+static void get_text(char *out_text, struct tm* tick_time)
 {
     char time_text[14] = "";
     strftime(time_text, 14, "It's 5:%M in\n", tick_time); // 14 bytes
-    static char out_text[38]; // <=38 bytes
     out_text[0] = '\0'; // 1 byte
     strcat(out_text, time_text); // 14 bytes
     strcat(out_text, cities_text[tick_time->tm_hour]); // <=20 bytes
+}
+
+// Called once per second
+static void handle_hour_tick(struct tm* tick_time, TimeUnits units_changed)
+{
+    static char out_text[38]; // <=38 bytes
+    get_text(out_text, tick_time);
     text_layer_set_text(city_layer, out_text);
 }
 
