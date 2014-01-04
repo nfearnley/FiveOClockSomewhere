@@ -1,18 +1,10 @@
-/*
-
-   "Classic" Digital Watch Pebble App
-
- */
-
 // Standard includes
 #include "pebble.h"
 
-
 // App-specific data
 Window *window; // All apps must have at least one window
-TextLayer *title_layer; // "It's 5 o'clock in"
 TextLayer *city_layer; // City name
-char *cities_text[24] = // Array of 24 cities, one for each hour. Each city name is 20 characters long.
+char *cities_text[24] = // Array of 24 cities, one for each hour. Each city name is up to 20 characters long.
 {
 	"Majuro", 			// 0
 	"Sydney", 			// 1
@@ -43,13 +35,12 @@ char *cities_text[24] = // Array of 24 cities, one for each hour. Each city name
 // Called once per second
 static void handle_hour_tick(struct tm* tick_time, TimeUnits units_changed)
 {
-	char time_text[20];
-	clock_copy_time_string(time_text, 20);
-	static char out_text[40];
-	out_text[0] = '\0';
-	strcat(out_text, cities_text[tick_time->tm_hour]);
-	strcat(out_text, "\n");
-	strcat(out_text, time_text);
+	char time_text[14] = "";
+	strftime(time_text, 14, "It's 5:%M in\n", tick_time); // 14 bytes
+	static char out_text[38]; // <=38 bytes
+	out_text[0] = '\0'; // 1 byte
+	strcat(out_text, time_text); // 14 bytes
+	strcat(out_text, cities_text[tick_time->tm_hour]); // <=20 bytes
 	text_layer_set_text(city_layer, out_text);
 }
 
@@ -60,16 +51,9 @@ static void do_init(void) {
   window = window_create();
   window_stack_push(window, true);
   window_set_background_color(window, GColorBlack);
-	
-  // Init the text layer used to show the time
-  title_layer = text_layer_create(GRect(29, 24, 144-40 /* width */, 168-54 /* height */));
-  text_layer_set_text_color(title_layer, GColorWhite);
-  text_layer_set_background_color(title_layer, GColorClear);
-  text_layer_set_font(title_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
-  text_layer_set_text(title_layer, "It's 5 o'clock in");
 
   // Init the text layer used to show the time
-  city_layer = text_layer_create(GRect(29, 84, 144-40 /* width */, 168-54 /* height */));
+  city_layer = text_layer_create(GRect(29, 24, 144-40 /* width */, 168-54 /* height */));
   text_layer_set_text_color(city_layer, GColorWhite);
   text_layer_set_background_color(city_layer, GColorClear);
   text_layer_set_font(city_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
@@ -81,13 +65,11 @@ static void do_init(void) {
   handle_hour_tick(current_time, SECOND_UNIT);
   tick_timer_service_subscribe(SECOND_UNIT, &handle_hour_tick);
 
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(title_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(city_layer));
 }
 
 static void do_deinit(void)
 {
-  text_layer_destroy(title_layer);
   text_layer_destroy(city_layer);
   window_destroy(window);
 }
