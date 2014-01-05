@@ -42,7 +42,7 @@ static void get_text(char *out_text, struct tm* tick_time)
 }
 
 // Called once per second
-static void handle_hour_tick(struct tm* tick_time, TimeUnits units_changed)
+static void handle_minute_tick(struct tm* tick_time, TimeUnits units_changed)
 {
     static char out_text[38]; // <=38 bytes
     get_text(out_text, tick_time);
@@ -67,8 +67,8 @@ static void do_init(void)
     // (This is why it's a good idea to have a separate routine to do the update itself.)
     time_t now = time(NULL);
     struct tm *current_time = localtime(&now);
-    handle_hour_tick(current_time, SECOND_UNIT);
-    tick_timer_service_subscribe(SECOND_UNIT, &handle_hour_tick);
+    handle_minute_tick(current_time, MINUTE_UNIT);
+    tick_timer_service_subscribe(MINUTE_UNIT, &handle_minute_tick);
 
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(city_layer));
 }
