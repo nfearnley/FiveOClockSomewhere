@@ -1,5 +1,5 @@
 // Standard includes
-#include "pebble.h"
+#include <pebble.h>
 
 // App-specific data
 Window *window; // All apps must have at least one window
