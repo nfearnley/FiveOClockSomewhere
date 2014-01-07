@@ -4,7 +4,7 @@
 // App-specific data
 Window *window; // All apps must have at least one window
 TextLayer *city_layer; // City name
-char *cities_text[24] = // Array of 24 cities, one for each hour. Each city name is up to 20 characters long.
+char cities_text[24][20] = // Array of 24 cities, one for each hour. Each city name is up to 20 characters long.
 {
     "Majuro",           // 0
     "Sydney",           // 1
