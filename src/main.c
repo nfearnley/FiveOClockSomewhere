@@ -1,5 +1,7 @@
 // Standard includes
 #include <pebble.h>
+#include "PDUtils.h"
+// The main event/run loop for our app
 
 struct city
 {
@@ -79,8 +81,8 @@ static void save_city(int hour)
 
 static void get_city(struct tm* tick_time)
 {
-    struct tm tm_expiry = (cities[tick_time->tm_hour].expiry);
-    time_t time_expiry = mktime(&tm_expiry);
+    struct tm *tm_expiry = &(cities[tick_time->tm_hour].expiry);
+    time_t time_expiry = p_mktime(tm_expiry);
     //time_t time_now = mktime(tick_time);
     //double diff = difftime(time_now, time_expiry);
     //app_log(APP_LOG_LEVEL_INFO, __FILE__, __LINE__, "Diff: %ld", (long)diff);
@@ -117,7 +119,7 @@ static void do_init(void)
     window_set_background_color(window, GColorBlack);
 
     // Init the text layer used to show the time
-    city_layer = text_layer_create(GRect(0, 0, 144 /* width */, 168 /* height */));
+    city_layer = text_layer_create(GRect(0, 0, 144, 168));
     text_layer_set_text_color(city_layer, GColorWhite);
     text_layer_set_background_color(city_layer, GColorClear);
     text_layer_set_font(city_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
@@ -138,10 +140,9 @@ static void do_deinit(void)
     window_destroy(window);
 }
 
-// The main event/run loop for our app
 int main(void)
 {
-    do_init();
+    //do_init();
     app_event_loop();
-    do_deinit();
+    //do_deinit();
 }
