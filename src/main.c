@@ -142,7 +142,7 @@ static void do_deinit(void)
 
 int main(void)
 {
-    //do_init();
+    do_init();
     app_event_loop();
-    //do_deinit();
+    do_deinit();
 }
