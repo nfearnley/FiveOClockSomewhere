@@ -5,14 +5,21 @@
     "companyName": "SlugSource",
     "versionCode": 1,
     "versionLabel": "1.0",
-    "watchapp": {
+    "watchapp":
+    {
         "watchface": true
     },
-    "appKeys": {},
-    "capabilities": [
+    "appKeys":
+    {
+        "hour": 0,
+        "name": 1
+    },
+    "capabilities":
+    [
         ""
     ],
-    "resources": {
+    "resources":
+    {
         "media": []
     }
 }

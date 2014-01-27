@@ -1,8 +1,13 @@
 static void load_city(int hour);
-static void save_city();
-static void download_city(int hour);
-static void get_text(char *out_text, struct tm* tick_time);
-static void handle_minute_tick(struct tm* tick_time, TimeUnits units_changed);
+static void save_city(int hour, char *name, int name_size);
+static void get_text(char *out_text, struct tm *tick_time);
+static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed);
+static void send_city_request(int hour);
+static void handle_in_received(DictionaryIterator *iter, void *context);
+static void handle_in_dropped(AppMessageResult reason, void *context);
+static void get_reason_str(char * reason_str, AppMessageResult reason, int reason_str_size);
+static void handle_out_failed(DictionaryIterator *failed, AppMessageResult reason, void *context);
+static void app_message_init(void);
 static void do_init(void);
 static void do_deinit(void);
 int main(void);
