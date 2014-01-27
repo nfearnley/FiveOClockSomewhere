@@ -58,7 +58,7 @@ Pebble.addEventListener("appmessage",
                 }
             );
             
-            console.log("Appmessage " + city_hour + ": " + city_name);
+            console.log("Appmessage " + hour + ": " + name);
         }
         catch(e)
         {
