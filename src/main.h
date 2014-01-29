@@ -1,7 +1,7 @@
 static void load_city(int hour);
 static void save_city(int hour, char *name, int name_size);
-static void get_text(char *out_text, struct tm *tick_time);
 static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed);
+static void update_gui(int hour, int minute, char *name);
 static void send_city_request(int hour);
 static void handle_in_received(DictionaryIterator *iter, void *context);
 static void handle_in_dropped(AppMessageResult reason, void *context);

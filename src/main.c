@@ -27,10 +27,10 @@ enum RequestStatus req_status = REQ_NOT_SENT;
 // Load the current city from persistant memory
 static void load_city(int hour)
 {
+    city_hour = hour;
     if (persist_exists(hour))
     {
         persist_read_data(hour, &city_name, sizeof(city_name));
-        city_hour = hour;
     }
     else
     {
@@ -44,25 +44,16 @@ static void save_city(int hour, char *name, int name_size)
     persist_write_data(hour, &name, name_size);
 }
 
-// Get the time text
-static void get_text(char *out_text, struct tm *tick_time)
-{
-    int hour = tick_time->tm_hour;
-    if (city_hour != hour)
-    {
-        load_city(hour);
-    }
-    strftime(out_text, 14, "It's 5:%M in\n", tick_time); // 14 bytes
-    strcat(out_text, city_name); // <=20 bytes
-}
-
 // Called once per minute
 static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed)
 {
     int hour = tick_time->tm_hour;
-    static char out_text[38];
-    get_text(out_text, tick_time);
-    text_layer_set_text(city_layer, out_text);
+    int minute = tick_time->tm_min;
+    if (city_hour != hour)
+    {
+        load_city(hour);
+    }
+    update_gui(hour, minute, city_name);
     if (units_changed & HOUR_UNIT)
     {
         req_status = REQ_NOT_SENT;
@@ -71,6 +62,13 @@ static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed)
     {
         send_city_request(hour);
     }
+}
+
+static void update_gui(int hour, int minute, char *name)
+{
+    static char out_text[38];
+    snprintf(out_text, 38, "It's 5:%d in\n%s", minute, name);
+    text_layer_set_text(city_layer, out_text);
 }
 
 static void send_city_request(int hour)
